@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Royal Arrival | Baby Shower</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+      --royal-gold: #c59b27;
+      --soft-blush: #fdf6f0;
+      --sky-soft: #edf5f8;
+      --text-main: #2c2a29;
+      --text-muted: #6e6a66;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0f141d;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* BACKGROUND PARTICLES */
+    .sparkles-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #fcf6ba, 0 0 20px #bf953f;
+      animation: floatSparkle linear infinite;
+    }
+
+    @keyframes floatSparkle {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ENVELOPE WELCOME SCREEN */
+    #welcome-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1b263b 0%, #0d1117 100%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 1s ease, visibility 1s;
+    }
+
+    .envelope-box {
+      position: relative;
+      width: 320px;
+      height: 230px;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .envelope-body {
+      position: absolute;
+      inset: 0;
+      background: #f4eee8;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 30px rgba(0,0,0,0.05);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      overflow: hidden;
+    }
+
+    .envelope-top-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 130px solid #ebdcd0;
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 4;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+    }
+
+    .gold-seal {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: var(--gold-gradient);
+      border-radius: 50%;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      color: #3d2b00;
+      font-size: 22px;
+      border: 2px solid #fff;
+      transition: all 0.4s ease;
+    }
+
+    .seal-crown {
+      position: absolute;
+      top: -12px;
+      font-size: 14px;
+    }
+
+    .inner-card {
+      position: absolute;
+      bottom: 12px;
+      left: 15px;
+      right: 15px;
+      height: 190px;
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 25px 15px;
+      text-align: center;
+      z-index: 2;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+      border: 1px solid var(--royal-gold);
+    }
+
+    .inner-card h2 {
+      font-family: 'Alex Brush', cursive;
+      font-size: 38px;
+      color: var(--royal-gold);
+    }
+
+    .tap-text {
+      margin-top: 35px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #fcf6ba;
+      text-transform: uppercase;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { opacity: 0.5; text-shadow: 0 0 5px rgba(255,255,255,0.2); }
+      to { opacity: 1; text-shadow: 0 0 15px rgba(252,246,186,0.8); }
+    }
+
+    /* OPEN ENVELOPE ANIMATION */
+    .envelope-box.open .envelope-top-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-box.open .inner-card {
+      transform: translateY(-110px);
+    }
+
+    .envelope-box.open .gold-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.5);
+    }
+
+    /* MAIN CARD CONTAINER */
+    #main-invitation {
+      width: 100%;
+      max-width: 520px;
+      margin: 20px;
+      background: linear-gradient(180deg, #ffffff 0%, #faf8f5 100%);
+      border-radius: 28px;
+      padding: 45px 30px;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(197, 155, 39, 0.3);
+      opacity: 0;
+      transform: scale(0.9) translateY(40px);
+      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #main-invitation.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    /* DECORATIVE ELEMENTS */
+    .wreath-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 10px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23c59b27" d="M50 10 C30 10 15 30 15 50 C15 70 30 90 50 90 C70 90 85 70 85 50 C85 30 70 10 50 10 Z M50 15 C67 15 80 32 80 50 C80 68 67 85 50 85 C33 85 20 68 20 50 C20 32 33 15 50 15 Z"/></svg>') center/contain no-repeat;
+      opacity: 0.8;
+    }
+
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--royal-gold);
+      margin-bottom: 8px;
+    }
+
+    .title-main {
+      font-family: 'Alex Brush', cursive;
+      font-size: 62px;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+
+    .couple-names {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      color: var(--text-main);
+      margin-bottom: 25px;
+    }
+
+    .ornament-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .line {
+      height: 1px;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, var(--royal-gold), transparent);
+    }
+
+    .diamond {
+      width: 6px;
+      height: 6px;
+      background: var(--royal-gold);
+      transform: rotate(45deg);
+    }
+
+    /* CARD CONTENT CAROUSEL/TABS */
+    .tab-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(197, 155, 39, 0.3);
+      background: transparent;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: var(--text-muted);
+    }
+
+    .tab-btn.active {
+      background: var(--gold-gradient);
+      color: #3d2b00;
+      font-weight: 600;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(197, 155, 39, 0.3);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* EVENT DETAILS TAB */
+    .event-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 25px;
+      border: 1px solid #f0e6d8;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+      margin-bottom: 25px;
+    }
+
+    .info-group {
+      margin-bottom: 20px;
+    }
+
+    .info-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--royal-gold);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .info-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .info-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* COUNTDOWN */
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .timer-box {
+      background: rgba(253, 246, 240, 0.8);
+      border-radius: 12px;
+      padding: 12px 5px;
+      border: 1px solid rgba(197, 155, 39, 0.2);
+    }
+
+    .timer-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--royal-gold);
+    }
+
+    .timer-lbl {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+
+    .map-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 30px;
+      background: #0f141d;
+      color: #fcf6ba;
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .map-link-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    /* FORM STYLING */
+    .rsvp-form {
+      text-align: left;
+    }
+
+    .field-wrap {
+      margin-bottom: 18px;
+    }
+
+    .field-wrap label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+      color: var(--royal-gold);
+      font-weight: 600;
+    }
+
+    .field-wrap input, .field-wrap select, .field-wrap textarea {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: 10px;
+      border: 1px solid #e2d7c7;
+      background: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .field-wrap input:focus, .field-wrap select:focus, .field-wrap textarea:focus {
+      border-color: var(--royal-gold);
+      box-shadow: 0 0 0 3px rgba(197, 155, 39, 0.1);
+    }
+
+    .submit-gold-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: var(--gold-gradient);
+      color: #3d2b00;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(197, 155, 39, 0.25);
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .submit-gold-btn:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    #form-response {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .msg-ok { color: #2e7d32; }
+    .msg-err { color: #c62828; }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING SPARKLES -->
+  <div class="sparkles-container" id="sparkles"></div>
+
+  <!-- WELCOME ENVELOPE SCREEN -->
+  <div id="welcome-screen">
+    <div class="envelope-box" id="envelopeBox">
+      <div class="envelope-body">
+        <div class="inner-card">
+          <h2>A Royal Arrival</h2>
+          <p style="font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-top: 10px;">Baby Shower Invitation</p>
+        </div>
+      </div>
+      <div class="envelope-top-flap"></div>
+      <div class="gold-seal">
+        <span class="seal-crown">👑</span>
+        A&U
+      </div>
+    </div>
+    <div class="tap-text">✨ Tap Sealed Envelope To Open ✨</div>
+  </div>
+
+  <!-- MAIN INVITATION CONTENT -->
+  <div id="main-invitation">
+    <div class="tagline">Welcome To The Celebration</div>
+    <h1 class="title-main">Baby Shower</h1>
+    <div class="couple-names">Aishwariyaba & Ujvaldeepsinh</div>
+
+    <div class="ornament-line">
+      <div class="line"></div>
+      <div class="diamond"></div>
+      <div class="line"></div>
+    </div>
+
+    <!-- TABS NAVIGATION -->
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="switchTab('details')">Invitation</button>
+      <button class="tab-btn" onclick="switchTab('rsvp')">RSVP</button>
+    </div>
+
+    <!-- TAB 1: DETAILS -->
+    <div id="tab-details" class="tab-content active">
+      <div class="event-card">
+        <div class="info-group">
+          <div class="info-label">Date & Day</div>
+          <div class="info-val">Sunday, January 17, 2027</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Time</div>
+          <div class="info-val">10:00 AM EST</div>
+        </div>
+        <div class="info-group">
+          <div class="info-label">Venue</div>
+          <div class="info-val">Royal Indian Banquet</div>
+          <div class="info-sub">31 Melanie Dr, Brampton, ON L6T 5H8</div>
+        </div>
+      </div>
+
+      <!-- TIMER -->
+      <div class="timer-grid">
+        <div class="timer-box"><div class="timer-num" id="d-days">00</div><div class="timer-lbl">Days</div></div>
+        <div class="timer-box"><div class="timer-num" id="d-hours">00</div><div class="timer-lbl">Hours</div></div>
+        <div class="timer-box"><div class="timer-num" id="d-mins">00</div><div class="timer-lbl">Mins</div></div>
+        <div class="timer-box"><div class="timer-num" id="d-secs">00</div><div class="timer-lbl">Secs</div></div>
+      </div>
+
+      <a href="https://maps.google.com/?q=Royal+Indian+Banquet+31+Melanie+Dr+Brampton+ON+L6T+5H8" target="_blank" class="map-link-btn">
+        📍 Get Location Directions
+      </a>
+    </div>
+
+    <!-- TAB 2: RSVP -->
+    <div id="tab-rsvp" class="tab-content">
+      <form id="royalRsvpForm" class="rsvp-form">
+        <div class="field-wrap">
+          <label for="name">Guest Name *</label>
+          <input type="text" id="name" name="name" required placeholder="Lord / Lady Full Name" />
+        </div>
+        <div class="field-wrap">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="your.email@example.com" />
+        </div>
+        <div class="field-wrap">
+          <label for="attendance">Attendance Status *</label>
+          <select id="attendance" name="attendance" required>
+            <option value="Joyfully Accepts">Joyfully Accepts</option>
+            <option value="Regretfully Declines">Regretfully Declines</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label for="guests">Number of Attending Guests</label>
+          <input type="number" id="guests" name="guests" min="1" value="1" />
+        </div>
+        <div class="field-wrap">
+          <label for="notes">Warm Wishes / Dietary Preferences</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="Leave a note for the parents-to-be..."></textarea>
+        </div>
+        <button type="submit" class="submit-gold-btn" id="btnSubmit">Confirm Attendance</button>
+      </form>
+      <div id="form-response"></div>
+    </div>
+  </div>
+
+  <script>
+    // Create Background Floating Sparkles
+    const sparklesContainer = document.getElementById('sparkles');
+    for (let i = 0; i < 35; i++) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.style.left = Math.random() * 100 + 'vw';
+      sparkle.style.animationDuration = (Math.random() * 5 + 4) + 's';
+      sparkle.style.animationDelay = Math.random() * 5 + 's';
+      sparklesContainer.appendChild(sparkle);
+    }
+
+    // Envelope Opening Transition
+    const envelopeBox = document.getElementById('envelopeBox');
+    const welcomeScreen = document.getElementById('welcome-screen');
+    const mainInvitation = document.getElementById('main-invitation');
+
+    envelopeBox.addEventListener('click', () => {
+      envelopeBox.classList.add('open');
+      setTimeout(() => {
+        welcomeScreen.style.opacity = '0';
+        setTimeout(() => {
+          welcomeScreen.style.display = 'none';
+          mainInvitation.classList.add('active');
+        }, 1000);
+      }, 800);
+    });
+
+    // Tab Switching Functionality
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      if (tabName === 'details') {
+        event.target.classList.add('active');
+        document.getElementById('tab-details').classList.add('active');
+      } else {
+        event.target.classList.add('active');
+        document.getElementById('tab-rsvp').classList.add('active');
+      }
+    }
+
+    // Live Countdown Timer
+    const targetDate = new Date('January 17, 2027 10:00:00').getTime();
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff > 0) {
+        document.getElementById('d-days').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('d-hours').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+        document.getElementById('d-mins').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+        document.getElementById('d-secs').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+      }
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    // RSVP Google Apps Script Web App Integration
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzm_awKwh4eMKlxld-a_1yeLufejVT_tndhFXh39WTv9GwltBsoWQuQcb09GIuzYAPk/exec";
+
+    const rsvpForm = document.getElementById('royalRsvpForm');
+    const formResponse = document.getElementById('form-response');
+    const btnSubmit = document.getElementById('btnSubmit');
+
+    rsvpForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      btnSubmit.disabled = true;
+      btnSubmit.innerText = "Submitting...";
+      formResponse.innerText = "";
+
+      const formData = new FormData(rsvpForm);
+
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => {
+        formResponse.className = "msg-ok";
+        formResponse.innerText = "✨ Thank you! Your response has been recorded.";
+        rsvpForm.reset();
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Confirm Attendance";
+      })
+      .catch(err => {
+        formResponse.className = "msg-err";
+        formResponse.innerText = "Submission failed. Please try again.";
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Confirm Attendance";
+      });
+    });
+  </script>
+</body>
+</html>
